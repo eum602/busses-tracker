@@ -1,0 +1,31 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: fleetman-webapp
+spec:
+  selector:
+    #This defines  which pods  are going to  be represented  by this service
+    #The service  becomes  a network endopoint  for either  other services 
+    #or maybe external users  to connect to (ed. browser)
+    app: webapp
+    #mylabelname: webapp #label is completely arbitrarily but must correspond to the label specified in the respective pod.
+    release: "0-5" #"0" #another label associated with the release zero; see the first-pod file
+  ports:
+  - name: http  
+    port: 80 #the port that receives request from other pods
+    nodePort: 30080 #the port to access by using the browser
+  type: NodePort #expose the port thorugh the node.
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: fleetman-queue
+spec:
+  selector:    
+    app: queue    
+  ports:
+  - name: http  
+    port: 8161 #the port that receives request from other pods
+    nodePort: 30010 #the port to access by using the browser
+  type: NodePort #expose the port thorugh the node.
