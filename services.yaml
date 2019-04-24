@@ -1,5 +1,5 @@
-kind: Service
 apiVersion: v1
+kind: Service
 metadata:
   name: fleetman-webapp
 spec:
@@ -9,7 +9,7 @@ spec:
     #or maybe external users  to connect to (ed. browser)
     app: webapp
     #mylabelname: webapp #label is completely arbitrarily but must correspond to the label specified in the respective pod.
-    release: "0-5" #"0" #another label associated with the release zero; see the first-pod file
+    #release: "0-5" #"0" #another label associated with the release zero; see the first-pod file
   ports:
   - name: http  
     port: 80 #the port that receives request from other pods
@@ -17,8 +17,8 @@ spec:
   type: NodePort #expose the port thorugh the node.
 
 ---
-kind: Service
 apiVersion: v1
+kind: Service
 metadata:
   name: fleetman-queue
 spec:

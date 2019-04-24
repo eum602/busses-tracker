@@ -1,25 +1,35 @@
-apiVersion: v1
-kind: Pod
-metadata:
-  name: webapp
-  labels:
-    #mylabelname: webapp
-    app: webapp
-    release: "0"
-spec: 
-  containers:
-  - name: webapp
-    image: richardchesterwood/k8s-fleetman-webapp-angular:release0
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata: 
+  name: webapp #it can be any name, not necessarily the same name of webapp specified lines behind
+spec:
+  # modify replicas according to your case
+  replicas: 2
+  selector:
+    matchLabels:
+      app: webapp #managing any pod which label is app: webapp
+  template:
+    ##################################################################
+    #all what is behind is what must go in a simple pod - Template for pods#
+    metadata:
+      #name: webapp-release-0-5 #we do not need to specify here a name because the ReplicaSet is in fact specifying a one.
+      labels:
+        app: webapp
+        #release: "0-5" #there can be more than one label, but one of these is that matches the selector (lines above)
+    spec: 
+      containers:
+      - name: webapp
+        image: richardchesterwood/k8s-fleetman-webapp-angular:release0-5
+    #####################################################################
 
 ---
 apiVersion: v1
 kind: Pod
 metadata:
-  name: webapp-release-0-5
+  name: queue
   labels:
-    app: webapp
-    release: "0-5"
+    app: queue
 spec: 
   containers:
-  - name: webapp
-    image: richardchesterwood/k8s-fleetman-webapp-angular:release0-5
+  - name: queue
+    image: richardchesterwood/k8s-fleetman-queue:release1
