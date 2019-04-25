@@ -1,8 +1,11 @@
 apiVersion: apps/v1
-kind: ReplicaSet
+kind: Deployment
 metadata: 
   name: webapp #it can be any name, not necessarily the same name of webapp specified lines behind
 spec:
+  minReadySeconds: 30 #setting to 30 seconds the minimum time at wich the pod is ready and available.
+      #so when we deploy this and thre is an old version then this old version is not put down at least
+      #within the 30 first seconds, so in this way we make sure our app is everytime responding.
   # modify replicas according to your case
   replicas: 2
   selector:
@@ -19,7 +22,7 @@ spec:
     spec: 
       containers:
       - name: webapp
-        image: richardchesterwood/k8s-fleetman-webapp-angular:release0-5
+        image: richardchesterwood/k8s-fleetman-webapp-angular:release0
     #####################################################################
 
 ---
