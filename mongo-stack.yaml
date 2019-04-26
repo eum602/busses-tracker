@@ -18,6 +18,24 @@ spec:
       containers:
       - name: mongodb #the name of the container in a Deployment really does not matter
         image: mongo:3.6.5-jessie
+        volumeMounts:
+          - name: mongo-persistent-storage
+            mountPath: /data/db #the folder inside the container that we want kubernetes to map to a folder
+                        #on a host directory strucutre.So this is the really job we need to do.
+                        #We need to find out what folder is mongodb using to store its data. In the
+                        #specific case of mongo this folder is: /data/db
+                        #Also we must specify where to store the data that is inside this folder; and to do that 
+                        #we need to define a volume.
+      volumes:
+        - name: mongo-persistent-storage
+          hostPath:
+            path: /mnt/some/directory/structure/  # a path into the virtual machine that has the minikube.
+                        #mnt: mount folder; this is the outside folder where the data(that is initially 
+                        #in the container) will be stored.
+                        #If nothing exists at the given path, an empty directory will be created
+                        # there as needed with permission set to 0755, having the same group and 
+                        #ownership with Kubelet.
+            type: DirectoryOrCreate
     #####################################################################
 
 
