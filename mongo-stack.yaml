@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: mongodb #it can be any name, not necessarily the same name of webapp specified lines behind
+spec:  
+  # modify replicas according to your case
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb #managing any pod which label is app: webapp
+  template:
+    ##################################################################
+    #all what is behind is what must go in a simple pod - Template for pods#
+    metadata:      
+      labels:
+        app: mongodb        
+    spec: 
+      containers:
+      - name: mongodb #the name of the container in a Deployment really does not matter
+        image: mongo:3.6.5-jessie
+    #####################################################################
+
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: fleetman-mongodb
+spec:
+  selector:
+    app: mongodb
+  ports:
+    - name: mongoport
+      port: 27017
+  type: ClusterIP #only internal to the cluster
